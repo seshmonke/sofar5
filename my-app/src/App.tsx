@@ -5,7 +5,8 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-  console.log('Тест окна TMA', window.Telegram ?);
+  try { console.log('Тест окна TMA', window.Telegram) } catch (error) {console.log('Ошибка', error)};
+  
 
   const [telegramData, setTelegramData] = useState(null);
 
