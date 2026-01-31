@@ -5,7 +5,7 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-  console.log('ОКНО ОКНААА', window.Telegram.WebApp);
+  console.log('ОКНО ОКНААА', window.Telegram?.WebApp);
 
   return (
     <>
@@ -29,7 +29,7 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-      <pre>{JSON.stringify(window.Telegram.WebApp, null, 2)}</pre>
+      <pre>{JSON.stringify(window.Telegram?.WebApp, null, 2)}</pre>
     </>
   )
 }
