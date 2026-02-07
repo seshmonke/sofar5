@@ -1,17 +1,17 @@
 import "./App.css"
 
-function TgData() {
-  console.log("ОКНО ОКНААА", window.Telegram?.WebApp);
+// function TgData() {
+//   console.log("ОКНО ОКНААА", window.Telegram?.WebApp);
 
-  return <footer>
-    <pre>{JSON.stringify(window.Telegram?.WebApp, null, 2)}</pre>
-  </footer>
-}
+//   return <footer>
+//     <pre>{JSON.stringify(window.Telegram?.WebApp, null, 2)}</pre>
+//   </footer>
+// }
 
 function App() {
 
   return (
-    <div className="sofia-sans-condensed-font text-left">
+    <div className="d-flex flex-column min-vh-100 sofia-sans-condensed-font text-left">
       <nav className="navbar navbar-expand-lg bg-danger">
         <div className="container-fluid">
 
@@ -32,46 +32,54 @@ function App() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <a className="nav-link" href="#">Новое</a>
+                <a className="nav-link text-light" href="#">Новое</a>
               </li>
 
 
               <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a className="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Одежда
                 </a>
                 <ul className="dropdown-menu bg-danger border-0" id="dropdown1">
-                  <li><a className="dropdown-item" href="#">Футболки</a></li>
-                  <li><a className="dropdown-item" href="#">Джинсы</a></li>
-                  <li><a className="dropdown-item" href="#">Пиджаки</a></li>
+                  <li><a className="dropdown-item text-light" href="#">Футболки</a></li>
+                  <li><a className="dropdown-item text-light" href="#">Джинсы</a></li>
+                  <li><a className="dropdown-item text-light" href="#">Пиджаки</a></li>
                 </ul>
               </li>
 
 
               <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a className="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Аксессуары
                 </a>
                 <ul className="dropdown-menu bg-danger border-0" id="dropdown2">
-                  <li><a className="dropdown-item" href="#">Шапки</a></li>
-                  <li><a className="dropdown-item" href="#">Ремни</a></li>
-                  <li><a className="dropdown-item" href="#">Очки</a></li>
+                  <li><a className="dropdown-item text-light" href="#">Шапки</a></li>
+                  <li><a className="dropdown-item text-light" href="#">Ремни</a></li>
+                  <li><a className="dropdown-item text-light" href="#">Очки</a></li>
                 </ul>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">SALE</a>
+                <a className="nav-link text-light" href="#">SALE</a>
               </li>
             </ul>
           </div>
         </div>
       </nav>
-
-
       <div className="container border border-5">
         <div className="container"> testing </div>
 
 
       </div>
+
+      <main className="flex-grow-1">
+      </main>
+
+      <footer className="bg-dark text-light py-5 mt-auto text-center fs-1">
+        <div className="container-fluid">
+          ТУТ БУДЕТ ФУТЕР
+        </div>
+      </footer>
+
 
     </div>
   )
