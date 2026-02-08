@@ -1,4 +1,5 @@
 import "./App.css"
+import { products } from "./data/products"
 
 // function TgData() {
 //   console.log("ОКНО ОКНААА", window.Telegram?.WebApp);
@@ -71,7 +72,30 @@ function App() {
 
       </div>
 
-      <main className="flex-grow-1">
+      <main className="flex-grow-1 py-4">
+        <div className="container">
+          <div className="row g-3">
+            {products.map((product) => (
+              <div key={product.id} className="col-6 col-lg-3">
+                <div className="card h-100 shadow-sm">
+                  <img 
+                    src={product.image} 
+                    className="card-img-top" 
+                    alt={product.name}
+                    style={{ objectFit: 'cover', height: '250px' }}
+                  />
+                  <div className="card-body d-flex flex-column">
+                    <h5 className="card-title fs-6">{product.name}</h5>
+                    <div className="mt-auto">
+                      <p className="fw-bold fs-5 mb-2 text-danger">{product.price} ₽</p>
+                      <button className="btn btn-danger w-100">Купить</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </main>
 
       <footer className="bg-dark text-light py-5 mt-auto text-center fs-1">
