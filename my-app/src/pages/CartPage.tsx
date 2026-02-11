@@ -254,11 +254,14 @@ export function CartPage() {
                   <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
                     {items.map((item) => (
                       <div
-                        key={item.id}
+                        key={`${item.id}-${item.size}`}
                         className="d-flex justify-content-between mb-2 pb-2 border-bottom"
                       >
                         <div>
                           <p className="mb-0 small">{item.name}</p>
+                          <p className="mb-0 text-muted small">
+                            Размер: {item.size}
+                          </p>
                           <p className="mb-0 text-muted small">
                             {item.quantity} × {item.price} ₽
                           </p>

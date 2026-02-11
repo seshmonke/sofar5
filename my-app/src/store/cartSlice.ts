@@ -8,6 +8,7 @@ export interface CartItem {
   price: number;
   image: string;
   quantity: number;
+  size: string;
 }
 
 interface CartState {
@@ -34,9 +35,9 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, action: PayloadAction<Product>) => {
-      const product = action.payload;
-      const existingItem = state.items.find(item => item.id === product.id);
+    addToCart: (state, action: PayloadAction<{ product: Product; size: string }>) => {
+      const { product, size } = action.payload;
+      const existingItem = state.items.find(item => item.id === product.id && item.size === size);
 
       if (existingItem) {
         existingItem.quantity += 1;
@@ -46,7 +47,8 @@ const cartSlice = createSlice({
           name: product.name,
           price: product.price,
           image: product.image,
-          quantity: 1
+          quantity: 1,
+          size: size
         });
       }
 
@@ -54,17 +56,17 @@ const cartSlice = createSlice({
       saveToLocalStorage(state.items);
     },
 
-    removeFromCart: (state, action: PayloadAction<number>) => {
-      state.items = state.items.filter(item => item.id !== action.payload);
+    removeFromCart: (state, action: PayloadAction<{ id: number; size: string }>) => {
+      state.items = state.items.filter(item => !(item.id === action.payload.id && item.size === action.payload.size));
       state.totalPrice = calculateTotalPrice(state.items);
       saveToLocalStorage(state.items);
     },
 
-    updateQuantity: (state, action: PayloadAction<{ id: number; quantity: number }>) => {
-      const item = state.items.find(item => item.id === action.payload.id);
+    updateQuantity: (state, action: PayloadAction<{ id: number; quantity: number; size: string }>) => {
+      const item = state.items.find(item => item.id === action.payload.id && item.size === action.payload.size);
       if (item) {
         if (action.payload.quantity <= 0) {
-          state.items = state.items.filter(item => item.id !== action.payload.id);
+          state.items = state.items.filter(item => !(item.id === action.payload.id && item.size === action.payload.size));
         } else {
           item.quantity = action.payload.quantity;
         }

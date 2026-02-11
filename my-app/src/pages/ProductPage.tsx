@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { products, DELIVERY_INFO } from '../data/products';
 import { useAppDispatch } from '../store/hooks';
@@ -11,6 +11,13 @@ export function ProductPage() {
   const [selectedSize, setSelectedSize] = useState<string>('');
 
   const product = products.find(p => p.id === Number(id));
+
+  // Автоматически выбираем размер, если он один
+  useEffect(() => {
+    if (product && product.sizes.length === 1) {
+      setSelectedSize(product.sizes[0]);
+    }
+  }, [product]);
 
   if (!product) {
     return (
@@ -28,7 +35,7 @@ export function ProductPage() {
   }
 
   const handleAddToCart = () => {
-    dispatch(addToCart(product));
+    dispatch(addToCart({ product, size: selectedSize }));
     alert('Товар добавлен в корзину!');
   };
 
@@ -117,6 +124,7 @@ export function ProductPage() {
             <button 
               className="btn btn-danger btn-lg w-100"
               onClick={handleAddToCart}
+              disabled={!selectedSize}
             >
               Добавить в корзину
             </button>
