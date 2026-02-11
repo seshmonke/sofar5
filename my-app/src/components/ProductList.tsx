@@ -7,7 +7,9 @@ export function ProductList() {
 
   const filteredProducts = selectedCategory === 'all' 
     ? products 
-    : products.filter(product => product.category === selectedCategory);
+    : selectedCategory === 'sale'
+    ? products.filter(product => product.discount)
+    : products.filter(product => product.category === selectedCategory || product.originalCategory === selectedCategory);
 
   return (
     <div className="row g-3">

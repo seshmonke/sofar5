@@ -10,6 +10,7 @@ export interface Product {
   sizes: string[];
   composition: Record<string, number>;
   discount?: number; // Процент скидки (0-100)
+  originalCategory?: ProductCategory; // Исходная категория товара (для товаров на распродаже)
 }
 
 export const DELIVERY_INFO = "Доставка по России: 2-7 дней. Бесплатная доставка при заказе от 3000 ₽. Возврат в течение 14 дней.";
@@ -104,7 +105,8 @@ export const products: Product[] = [
     description: "Комфортная базовая футболка из качественного хлопка. Идеальна для повседневного ношения. Простой дизайн подходит к любому стилю. РАСПРОДАЖА!",
     sizes: ["XS", "S", "M", "L", "XL"],
     composition: { "Хлопок": 100 },
-    discount: 30
+    discount: 30,
+    originalCategory: 'tshirts'
   },
   {
     id: 10,
@@ -115,7 +117,8 @@ export const products: Product[] = [
     description: "Классические джинсы прямого кроя. Прочная ткань, удобная посадка. Универсальный вариант для любого случая. РАСПРОДАЖА!",
     sizes: ["28", "30", "32", "34", "36"],
     composition: { "Хлопок": 98, "Эластан": 2 },
-    discount: 25
+    discount: 25,
+    originalCategory: 'jeans'
   },
   {
     id: 11,
@@ -126,7 +129,8 @@ export const products: Product[] = [
     description: "Удобные спортивные кроссовки для активного образа жизни. Амортизирующая подошва, дышащий материал. РАСПРОДАЖА!",
     sizes: ["36", "37", "38", "39", "40", "41", "42", "43"],
     composition: { "Текстиль": 70, "Резина": 30 },
-    discount: 40
+    discount: 40,
+    originalCategory: 'shoes'
   },
   {
     id: 12,
@@ -137,6 +141,7 @@ export const products: Product[] = [
     description: "Элегантный пиджак для деловых встреч и официальных мероприятий. Качественный пошив, идеальная посадка. РАСПРОДАЖА!",
     sizes: ["XS", "S", "M", "L", "XL"],
     composition: { "Шерсть": 70, "Полиэстер": 30 },
-    discount: 35
+    discount: 35,
+    originalCategory: 'jackets'
   }
 ];
