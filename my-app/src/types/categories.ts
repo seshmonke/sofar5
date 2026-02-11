@@ -7,10 +7,11 @@ export type ProductCategory =
   | 'belts'        // Ремни
   | 'glasses'      // Очки
   | 'shoes'        // Кроссовки
-  | 'bags';        // Рюкзаки
+  | 'bags'         // Рюкзаки
+  | 'sale';        // Распродажа
 
 export const categoryNames: Record<ProductCategory, string> = {
-  all: 'Все товары',
+  all: 'Все това��ы',
   tshirts: 'Футболки',
   jeans: 'Джинсы',
   jackets: 'Пиджаки',
@@ -18,5 +19,6 @@ export const categoryNames: Record<ProductCategory, string> = {
   belts: 'Ремни',
   glasses: 'Очки',
   shoes: 'Кроссовки',
-  bags: 'Рюкзаки'
+  bags: 'Рюкзаки',
+  sale: 'Распродажа'
 };

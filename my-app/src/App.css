@@ -51,3 +51,36 @@
     padding: 0.75rem;
   }
 }
+
+/* Стили для кнопки добавления в корзину */
+.add-to-cart-btn {
+  transition: all 0.3s ease;
+}
+
+.add-to-cart-btn.btn-added {
+  background-color: #ffffff;
+  color: #333;
+  border-color: #ffffff;
+  font-weight: bold;
+}
+
+.add-to-cart-btn.btn-added:hover,
+.add-to-cart-btn.btn-added:focus {
+  background-color: #ffffff;
+  color: #333;
+  border-color: #ffffff;
+  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.5);
+}
+
+.add-to-cart-btn.btn-added:disabled {
+  background-color: #ffffff;
+  color: #333;
+  border-color: #ffffff;
+  cursor: not-allowed;
+}
+
+/* Стили для выпадающего меню при наведении */
+.dropdown-menu .dropdown-item:hover {
+  color: #D44040 !important;
+  background-color: white;
+}

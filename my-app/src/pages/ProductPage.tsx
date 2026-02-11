@@ -9,6 +9,7 @@ export function ProductPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [selectedSize, setSelectedSize] = useState<string>('');
+  const [isAdded, setIsAdded] = useState<boolean>(false);
 
   const product = products.find(p => p.id === Number(id));
 
@@ -36,7 +37,12 @@ export function ProductPage() {
 
   const handleAddToCart = () => {
     dispatch(addToCart({ product, size: selectedSize }));
-    alert('Товар добавлен в корзину!');
+    setIsAdded(true);
+    
+    // Возвращаем кнопку в исходное состояние через 2 секунды
+    setTimeout(() => {
+      setIsAdded(false);
+    }, 600);
   };
 
   return (
@@ -122,11 +128,14 @@ export function ProductPage() {
 
             {/* Кнопка добавления в корзину */}
             <button 
-              className="btn btn-danger btn-lg w-100"
+              className={`btn btn-lg w-100 add-to-cart-btn ${isAdded ? 'btn-added' : 'btn-danger'}`}
               onClick={handleAddToCart}
-              disabled={!selectedSize}
+              disabled={!selectedSize || isAdded}
+              style={{
+                transition: 'all 0.3s ease'
+              }}
             >
-              Добавить в корзину
+              {isAdded ? 'Добавлено' : 'Добавить в корзину'}
             </button>
           </div>
         </div>

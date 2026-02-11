@@ -29,6 +29,20 @@ export function CartPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
 
+  // Расчёт цены без скидки и общей суммы скидки
+  const calculatePriceWithoutDiscount = (item: typeof items[0]): number => {
+    if (!item.discount) return item.price;
+    return Math.round(item.price / (1 - item.discount / 100));
+  };
+
+  const calculateItemDiscount = (item: typeof items[0]): number => {
+    const priceWithoutDiscount = calculatePriceWithoutDiscount(item);
+    return (priceWithoutDiscount - item.price) * item.quantity;
+  };
+
+  const totalDiscount = items.reduce((sum, item) => sum + calculateItemDiscount(item), 0);
+  const totalPriceWithoutDiscount = items.reduce((sum, item) => sum + calculatePriceWithoutDiscount(item) * item.quantity, 0);
+
   if (items.length === 0 && !orderPlaced) {
     return (
       <main className="flex-grow-1 py-4">
@@ -252,39 +266,53 @@ export function CartPage() {
                 <div className="mb-3">
                   <h6 className="mb-2">Товары:</h6>
                   <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                    {items.map((item) => (
-                      <div
-                        key={`${item.id}-${item.size}`}
-                        className="d-flex justify-content-between mb-2 pb-2 border-bottom"
-                      >
-                        <div>
-                          <p className="mb-0 small">{item.name}</p>
-                          <p className="mb-0 text-muted small">
-                            Размер: {item.size}
-                          </p>
-                          <p className="mb-0 text-muted small">
-                            {item.quantity} × {item.price} ₽
+                    {items.map((item) => {
+                      const priceWithoutDiscount = calculatePriceWithoutDiscount(item);
+                      return (
+                        <div
+                          key={`${item.id}-${item.size}`}
+                          className="d-flex justify-content-between mb-2 pb-2 border-bottom"
+                        >
+                          <div>
+                            <p className="mb-0 small">{item.name}</p>
+                            <p className="mb-0 text-muted small">
+                              Размер: {item.size}
+                            </p>
+                            <p className="mb-0 text-muted small">
+                              {item.quantity} × {item.price} ₽
+                            </p>
+                            {item.discount && (
+                              <p className="mb-0 text-muted small text-decoration-line-through">
+                                без скидки: {priceWithoutDiscount} ₽
+                              </p>
+                            )}
+                          </div>
+                          <p className="mb-0 fw-bold">
+                            {item.price * item.quantity} ₽
                           </p>
                         </div>
-                        <p className="mb-0 fw-bold">
-                          {item.price * item.quantity} ₽
-                        </p>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
 
                 <div className="border-top pt-3">
                   <div className="d-flex justify-content-between mb-2">
-                    <span>Подитог:</span>
-                    <span>{totalPrice} ₽</span>
+                    <span className="text-muted">Сумма без скидки:</span>
+                    <span>{totalPriceWithoutDiscount} ₽</span>
                   </div>
+                  {totalDiscount > 0 && (
+                    <div className="d-flex justify-content-between mb-2 text-success fw-bold">
+                      <span>Ваша экономия:</span>
+                      <span>-{Math.round(totalDiscount)} ₽</span>
+                    </div>
+                  )}
                   <div className="d-flex justify-content-between mb-2">
                     <span>Доставка:</span>
                     <span>Бесплатно</span>
                   </div>
-                  <div className="d-flex justify-content-between fw-bold fs-5 text-danger">
-                    <span>Итого:</span>
+                  <div className="d-flex justify-content-between fw-bold fs-5 text-danger border-top pt-2">
+                    <span>Итого к оплате:</span>
                     <span>{totalPrice} ₽</span>
                   </div>
                 </div>

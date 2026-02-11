@@ -9,18 +9,21 @@ export interface CartItem {
   image: string;
   quantity: number;
   size: string;
+  discount?: number; // Процент скидки
 }
 
 interface CartState {
   items: CartItem[];
   totalPrice: number;
+  totalDiscount: number; // Общая сумма скидки
 }
 
 const STORAGE_KEY = 'assortiShop_cart';
 
 const initialState: CartState = {
   items: [],
-  totalPrice: 0
+  totalPrice: 0,
+  totalDiscount: 0
 };
 
 const calculateTotalPrice = (items: CartItem[]): number => {
@@ -48,7 +51,8 @@ const cartSlice = createSlice({
           price: product.price,
           image: product.image,
           quantity: 1,
-          size: size
+          size: size,
+          discount: product.discount
         });
       }
 

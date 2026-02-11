@@ -58,7 +58,7 @@ function App() {
                 </ul>
               </li>
               <li className="nav-item">
-                <a className="nav-link text-light" href="#">SALE</a>
+                <Link className="nav-link text-light" to="/category/sale">SALE</Link>
               </li>
             </ul>
           </div>
