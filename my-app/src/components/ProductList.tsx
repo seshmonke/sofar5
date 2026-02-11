@@ -1,12 +1,23 @@
 import { products } from '../data/products';
-import { useAppSelector } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { addToCart } from '../store/cartSlice';
 
-export function ProductList() {
+interface ProductListProps {
+  onAddToCart?: () => void;
+}
+
+export function ProductList({ onAddToCart }: ProductListProps) {
+  const dispatch = useAppDispatch();
   const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
 
   const filteredProducts = selectedCategory === 'all' 
     ? products 
     : products.filter(product => product.category === selectedCategory);
+
+  const handleAddToCart = (product: typeof products[0]) => {
+    dispatch(addToCart(product));
+    onAddToCart?.();
+  };
 
   return (
     <div className="row g-3">
@@ -23,7 +34,12 @@ export function ProductList() {
               <h5 className="card-title fs-6">{product.name}</h5>
               <div className="mt-auto">
                 <p className="fw-bold fs-5 mb-2 text-danger">{product.price} ₽</p>
-                <button className="btn btn-danger w-100">Купить</button>
+                <button 
+                  className="btn btn-danger w-100"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  Купить
+                </button>
               </div>
             </div>
           </div>

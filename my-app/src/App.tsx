@@ -1,9 +1,22 @@
 import "./App.css"
+import { useState, useEffect } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from './store/hooks'
+import { loadFromLocalStorage } from './store/cartSlice'
 import { HomePage } from './pages/HomePage'
 import { CategoryPage } from './pages/CategoryPage'
+import { CartPage } from './pages/CartPage'
+import { CartModal } from './components/CartModal'
 
 function App() {
+  const dispatch = useAppDispatch();
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const cartItemsCount = useAppSelector((state) => state.cart.items.length);
+
+  useEffect(() => {
+    dispatch(loadFromLocalStorage());
+  }, [dispatch]);
+
   return (
     <div className="d-flex flex-column min-vh-100 sofia-sans-condensed-font text-left">
       <nav className="navbar navbar-expand-lg bg-danger">
@@ -48,12 +61,31 @@ function App() {
               </li>
             </ul>
           </div>
+
+          <button
+            className="btn btn-light ms-auto position-relative"
+            onClick={() => setIsCartOpen(true)}
+            style={{ marginRight: '10px' }}
+          >
+            🛒 Корзина
+            {cartItemsCount > 0 && (
+              <span
+                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark"
+                style={{ transform: 'translate(-50%, -50%)' }}
+              >
+                {cartItemsCount}
+              </span>
+            )}
+          </button>
         </div>
       </nav>
+
+      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/category/:category" element={<CategoryPage />} />
+        <Route path="/checkout" element={<CartPage />} />
       </Routes>
 
       <footer className="bg-dark text-light py-5 mt-auto text-center fs-1">
