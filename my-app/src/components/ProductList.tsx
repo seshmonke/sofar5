@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { products } from '../data/products';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { addToCart } from '../store/cartSlice';
@@ -24,12 +25,14 @@ export function ProductList({ onAddToCart }: ProductListProps) {
       {filteredProducts.map((product) => (
         <div key={product.id} className="col-6 col-lg-3">
           <div className="card h-100 shadow-sm">
-            <img 
-              src={product.image} 
-              className="card-img-top" 
-              alt={product.name}
-              style={{ objectFit: 'cover', height: '250px' }}
-            />
+            <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <img 
+                src={product.image} 
+                className="card-img-top" 
+                alt={product.name}
+                style={{ objectFit: 'cover', height: '250px', cursor: 'pointer' }}
+              />
+            </Link>
             <div className="card-body d-flex flex-column">
               <h5 className="card-title fs-6">{product.name}</h5>
               <div className="mt-auto">
