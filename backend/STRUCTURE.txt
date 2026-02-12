@@ -1,0 +1,277 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    BACKEND СТРУКТУРА ПРОЕКТА                              ║
+║                  Node.js + Express + PostgreSQL + Prisma                   ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+backend/
+│
+├── 📄 package.json                 ← Зависимости проекта
+├── 📄 tsconfig.json                ← Конфигурация TypeScript
+├── 📄 eslint.config.js             ← Конфигурация ESLint
+├── 📄 docker-compose.yml           ← Docker Compose конфигурация
+├── 📄 .env                         ← Переменные окружения (в .gitignore)
+├── 📄 .env.example                 ← Пример переменных окружения
+├── 📄 .gitignore                   ← Файлы для игнорирования в Git
+├── 📄 README.md                    ← Документация проекта
+│
+├── 📁 src/                         ← Исходный код приложения
+│   │
+│   ├── 📄 main.ts                  ← Точка входа приложения
+│   │                                 (запуск сервера)
+│   │
+│   ├── 📄 app.ts                   ← Конфигурация Express
+│   │                                 (middleware, маршруты)
+│   │
+│   ├── 📁 config/                  ← Конфигурация приложения
+│   │   ├── 📄 env.ts               ← Переменные окружения
+│   │   └── 📄 constants.ts         ← Константы приложения
+│   │
+│   ├── 📁 controllers/             ← Обработчики HTTP запросов
+│   │   ├── 📄 productController.ts ← Контроллер для продуктов
+│   │   ├── 📄 categoryController.ts
+│   │   ├── 📄 cartController.ts
+│   │   └── 📄 userController.ts
+│   │
+│   ├── 📁 services/                ← Бизнес-логика приложения
+│   │   ├── 📄 productService.ts    ← Сервис для продуктов
+│   │   ├── 📄 categoryService.ts
+│   │   ├── 📄 cartService.ts
+│   │   └── 📄 userService.ts
+│   │
+│   ├── 📁 repositories/            ← Работа с БД (Prisma)
+│   │   ├── 📄 productRepository.ts ← Репозиторий для продуктов
+│   │   ├── 📄 categoryRepository.ts
+│   │   ├── 📄 cartRepository.ts
+│   │   └── 📄 userRepository.ts
+│   │
+│   ├── 📁 routes/                  ← API маршруты
+│   │   ├── 📄 index.ts             ← Главный файл маршрутов
+│   │   ├── 📄 products.ts          ← Маршруты для продуктов
+│   │   ├── 📄 categories.ts
+│   │   ├── 📄 cart.ts
+│   │   └── 📄 users.ts
+│   │
+│   ├── 📁 middleware/              ← Middleware функции
+│   │   ├── 📄 errorHandler.ts      ← Обработчик ошибок
+│   │   ├── 📄 cors.ts              ← CORS конфигурация
+│   │   ├── 📄 auth.ts              ← Аутентификация
+│   │   └── 📄 validation.ts        ← Валидация данных
+│   │
+│   ├── 📁 types/                   ← TypeScript типы и интерфейсы
+│   │   ├── 📄 index.ts             ← Основные типы
+│   │   ├── 📄 product.ts           ← Типы для продуктов
+│   │   ├── 📄 category.ts
+│   │   ├── 📄 user.ts
+│   │   └── 📄 api.ts               ← API типы (запросы/ответы)
+│   │
+│   ├── 📁 utils/                   ← Утилиты и помощники
+│   │   ├── 📄 logger.ts            ← Логирование
+│   │   ├── 📄 validators.ts        ← Функции валидации
+│   │   └── 📄 helpers.ts           ← Вспомогательные функции
+│   │
+│   └── 📁 errors/                  ← Кастомные классы ошибок
+│       └── 📄 AppError.ts          ← Базовый класс ошибок
+│
+├── 📁 prisma/                      ← Prisma ORM конфигурация
+│   ├── 📄 schema.prisma            ← Схема БД (модели)
+│   └── 📁 migrations/              ← Миграции БД (автогенерируется)
+│
+└── 📁 docker/                      ← Docker конфигурация
+    ├── 📄 Dockerfile               ← Docker образ приложения
+    └── 📄 .dockerignore            ← Файлы для игнорирования в Docker
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         ПОТОК ДАННЫХ В ПРИЛОЖЕНИИ                         ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+HTTP Request (GET /api/products)
+    ↓
+[Routes] - src/routes/products.ts
+    ↓ маршрутизирует запрос
+[Controllers] - src/controllers/productController.ts
+    ↓ обрабатывает запрос, валидирует данные
+[Services] - src/services/productService.ts
+    ↓ содержит бизнес-логику
+[Repositories] - src/repositories/productRepository.ts
+    ↓ работает с БД через Prisma
+[Prisma Client] - @prisma/client
+    ↓ генерирует SQL запр��сы
+[PostgreSQL Database]
+    ↓ возвращает данные
+[Response] - JSON ответ клиенту
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         СЛОИ АРХИТЕКТУРЫ                                   ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ ROUTES (src/routes/)                                                    │
+│ • Определяют API endpoints                                             │
+│ • Маршрутизируют запросы к контроллерам                                │
+│ • Пример: GET /api/products → productController.getAllProducts()       │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    ↓
+┌──────────────────────��──────────────────────────────────────────────────┐
+│ CONTROLLERS (src/controllers/)                                          │
+│ • Обрабатывают HTTP запросы                                            │
+│ • Валидируют входные данные                                            │
+│ • Вызывают сервисы                                                     │
+│ • Возвращают HTTP ответы                                              │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    ↓
+┌─────────────────────────────────────────────────────────────────────────┐
+│ SERVICES (src/services/)                                               │
+│ • Содержат бизнес-логику приложения                                    │
+│ • Обрабатывают ошибки                                                  │
+│ • Вызывают репозитории                                                 │
+│ • Переиспользуются в разных контроллерах                               │
+└──────────────────────────────────────────────���──────────────────────────┘
+                                    ↓
+┌─────────────────────────────────────────────────────────────────────────┐
+│ REPOSITORIES (src/repositories/)                                        │
+│ • Работают с БД через Prisma                                           │
+│ • Выполняют CRUD операции                                              │
+│ • Изолируют логику БД                                                  │
+│ • Возвращают данные сервисам                                           │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    ↓
+┌─────────────────────────────────────────────────────────────────────────┐
+│ DATABASE (PostgreSQL)                                                   │
+│ • Хранит данные                                                        │
+│ • Выполняет SQL запросы                                                │
+└─────────────────────────────────────────────────────────────────────────┘
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         БЫСТРЫЙ СТАРТ                                      ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+1. Перейдите в папку backend:
+   $ cd backend
+
+2. Запустите Docker Compose:
+   $ docker-compose up
+
+3. В другом терминале запустите миграции:
+   $ docker-compose exec backend npm run prisma:migrate
+
+4. Проверьте, что всё работает:
+   $ curl http://localhost:3000/api/health
+
+5. Откройте Prisma Studio для управления БД:
+   $ docker-compose exec backend npm run prisma:studio
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         ПОЛЕЗНЫЕ КОМАНДЫ                                   ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+npm run dev              # Запуск в режиме разработки (hot reload)
+npm run build            # Компиляция TypeScript
+npm start                # Запуск скомпилированного приложения
+npm run lint             # Проверка кода с ESLint
+npm run prisma:migrate  # Запуск миграций БД
+npm run prisma:studio   # Открыть Prisma Studio
+npm run prisma:generate # Генерация Prisma клиента
+
+docker-compose up       # Запуск Docker контейнеров
+docker-compose down     # Остановка Docker контейнеров
+docker-compose logs -f  # Просмотр логов
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         МОДЕЛИ БД (Prisma)                                 ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+Category (Категории)
+├── id: String (Primary Key)
+├── name: String (Unique)
+├── slug: String (Unique)
+├── description: String?
+├── image: String?
+├── products: Product[] (Relation)
+├── createdAt: DateTime
+└── updatedAt: DateTime
+
+Product (Продукты)
+├── id: String (Primary Key)
+├── name: String
+├── slug: String (Unique)
+├── description: String?
+├── price: Float
+├── image: String?
+├── stock: Int
+├── category: Category (Relation)
+├── categoryId: String (Foreign Key)
+├── createdAt: DateTime
+└── updatedAt: DateTime
+
+User (Пользователи)
+├── id: String (Primary Key)
+├── email: String (Unique)
+├── name: String
+├── password: String
+├── role: String
+├── createdAt: DateTime
+└── updatedAt: DateTime
+
+Cart (Корзины)
+├── id: String (Primary Key)
+├── userId: String
+├── items: CartItem[] (Relation)
+├── createdAt: DateTime
+└── updatedAt: DateTime
+
+CartItem (Товары в корзине)
+├── id: String (Primary Key)
+├── cart: Cart (Relation)
+├── cartId: String (Foreign Key)
+├── productId: String
+├── quantity: Int
+├── createdAt: DateTime
+└── updatedAt: DateTime
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         API ENDPOINTS                                      ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+Health Check
+  GET /api/health
+
+Products
+  GET    /api/products              # Получить все продукты (с пагинацией)
+  GET    /api/products/:id          # Получить продукт по ID
+  POST   /api/products              # Создать новый продукт
+  PUT    /api/products/:id          # Обновить продукт
+  DELETE /api/products/:id          # Удалить продукт
+
+Query параметры для пагинации:
+  ?page=1&limit=10
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         ОБРАБОТКА ОШИБОК                                   ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+ValidationError (400)
+  throw new ValidationError('Требуются поля: name, price');
+
+NotFoundError (404)
+  throw new NotFoundError('Продукт не найден');
+
+UnauthorizedError (401)
+  throw new UnauthorizedError('Требуется авторизация');
+
+ForbiddenError (403)
+  throw new ForbiddenError('Доступ запрещен');
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         ТЕХНОЛОГИЧЕСКИЙ СТЕК                               ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+✓ Node.js 20          - JavaScript runtime
+✓ Express.js 4.18     - веб-фреймворк
+✓ TypeScript 5.3      - типизированный JavaScript
+✓ PostgreSQL 16       - база данных
+✓ Prisma 5.7          - ORM для работы с БД
+✓ Docker              - контейнеризация
+✓ CORS                - кросс-доменные запросы
+✓ ESLint              - проверка кода
+✓ ts-node-dev         - hot reload для разработки
+
