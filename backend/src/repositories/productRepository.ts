@@ -22,6 +22,15 @@ export class ProductRepository {
     });
   }
 
+  async findByBarcode(barcode: string) {
+    return prisma.product.findUnique({
+      where: { barcode },
+      include: {
+        category: true,
+      },
+    });
+  }
+
   async findByCategory(categoryId: string, skip: number = 0, take: number = 10) {
     return prisma.product.findMany({
       where: { categoryId },

@@ -33,6 +33,20 @@ export class ProductController {
     }
   }
 
+  async getProductByBarcode(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { barcode } = req.params;
+      const product = await productService.getProductByBarcode(barcode);
+
+      res.status(HTTP_STATUS.OK).json({
+        success: true,
+        data: product,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async createProduct(req: Request, res: Response, next: NextFunction) {
     try {
       const product = await productService.createProduct(req.body);
@@ -70,6 +84,31 @@ export class ProductController {
       res.status(HTTP_STATUS.OK).json({
         success: true,
         message: 'Продукт успешно удален',
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateProductStock(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { stock } = req.body;
+
+      if (typeof stock !== 'number' || stock < 0) {
+        res.status(HTTP_STATUS.BAD_REQUEST).json({
+          success: false,
+          error: 'Количество должно быть неотрицательным числом',
+        });
+        return;
+      }
+
+      const product = await productService.updateProductStock(id, stock);
+
+      res.status(HTTP_STATUS.OK).json({
+        success: true,
+        data: product,
+        message: 'Количество товара успешно обновлено',
       });
     } catch (error) {
       next(error);

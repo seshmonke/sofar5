@@ -31,8 +31,11 @@ model Product {
   price       Float
   image       String?
   stock       Int      @default(0)
+  barcode     String?  @unique
   category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId  String
+  sales       Sale[]
+  qrCode      QRCode?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -71,4 +74,26 @@ model CartItem {
   updatedAt DateTime @updatedAt
 
   @@map("cart_items")
+}
+
+model Sale {
+  id        String   @id @default(cuid())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  quantity  Int
+  price     Float
+  saleDate  DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  @@map("sales")
+}
+
+model QRCode {
+  id        String   @id @default(cuid())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String   @unique
+  code      String   @unique
+  createdAt DateTime @default(now())
+
+  @@map("qrcodes")
 }

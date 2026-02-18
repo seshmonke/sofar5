@@ -1,0 +1,36 @@
+{
+  "name": "telegram-admin-bot",
+  "version": "1.0.0",
+  "description": "Telegram бот для управления товарами с QR-кодами",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn src/main.ts",
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "lint": "eslint src"
+  },
+  "keywords": [
+    "telegram",
+    "grammy",
+    "typescript",
+    "qrcode",
+    "bot"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "grammy": "^1.24.0",
+    "qrcode": "^1.5.3",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/qrcode": "^1.5.2",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
+    "eslint": "^8.55.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3"
+  }
+}

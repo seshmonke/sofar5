@@ -35,6 +35,14 @@ export class ProductService {
     return product;
   }
 
+  async getProductByBarcode(barcode: string) {
+    const product = await productRepository.findByBarcode(barcode);
+    if (!product) {
+      throw new NotFoundError(`Продукт с штрих-кодом ${barcode} не найден`);
+    }
+    return product;
+  }
+
   async getProductsByCategory(categoryId: string, page: number = 1, limit: number = LIMITS.DEFAULT_PAGE_SIZE) {
     const skip = (page - 1) * limit;
     return productRepository.findByCategory(categoryId, skip, limit);
@@ -56,6 +64,11 @@ export class ProductService {
   async deleteProduct(id: string) {
     await this.getProductById(id);
     return productRepository.delete(id);
+  }
+
+  async updateProductStock(id: string, stock: number) {
+    const product = await this.getProductById(id);
+    return productRepository.update(id, { stock });
   }
 }
 
