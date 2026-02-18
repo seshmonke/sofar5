@@ -103,14 +103,14 @@ export async function handleAddProductFlow(ctx: Context): Promise<void> {
 
       case PRODUCT_FIELDS.CATEGORY:
         const categoryIndex = parseInt(text, 10) - 1;
-        const categories = await apiService.getAllCategories();
+        const categoriesForSelection = await apiService.getAllCategories();
 
-        if (isNaN(categoryIndex) || categoryIndex < 0 || categoryIndex >= categories.length) {
+        if (isNaN(categoryIndex) || categoryIndex < 0 || categoryIndex >= categoriesForSelection.length) {
           await ctx.reply('❌ Выберите корректный номер категории');
           return;
         }
 
-        state.categoryId = categories[categoryIndex].id;
+        state.categoryId = categoriesForSelection[categoryIndex].id;
 
         // Создаем товар
         const productData: CreateProductData = {

@@ -27,13 +27,18 @@ class QRCodeService {
    */
   async generateQRCodeBuffer(data: string, options?: any): Promise<Buffer> {
     try {
-      const buffer = await QRCode.toBuffer(data, {
-        errorCorrectionLevel: 'H',
-        type: 'image/png',
-        quality: 0.95,
-        margin: 1,
-        width: 300,
-        ...options,
+      const buffer = await new Promise<Buffer>((resolve, reject) => {
+        QRCode.toBuffer(data, {
+          errorCorrectionLevel: 'H',
+          type: 'image/png',
+          quality: 0.95,
+          margin: 1,
+          width: 300,
+          ...options,
+        }, (err: any, buffer: Buffer) => {
+          if (err) reject(err);
+          else resolve(buffer);
+        });
       });
       return buffer;
     } catch (error) {
@@ -47,13 +52,18 @@ class QRCodeService {
    */
   async generateQRCodeSVG(data: string, options?: any): Promise<string> {
     try {
-      const svg = await QRCode.toString(data, {
-        errorCorrectionLevel: 'H',
-        type: 'image/svg+xml',
-        quality: 0.95,
-        margin: 1,
-        width: 300,
-        ...options,
+      const svg = await new Promise<string>((resolve, reject) => {
+        QRCode.toString(data, {
+          errorCorrectionLevel: 'H',
+          type: 'image/svg+xml',
+          quality: 0.95,
+          margin: 1,
+          width: 300,
+          ...options,
+        }, (err: any, svg: string) => {
+          if (err) reject(err);
+          else resolve(svg);
+        });
       });
       return svg;
     } catch (error) {
