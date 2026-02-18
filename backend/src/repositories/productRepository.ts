@@ -1,13 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { env } from '../config/env';
 
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: env.DATABASE_URL,
-    },
-  },
-});
+const prisma = new PrismaClient();
 
 export class ProductRepository {
   async findAll(skip: number = 0, take: number = 10) {
